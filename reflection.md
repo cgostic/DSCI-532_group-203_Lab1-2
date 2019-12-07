@@ -1,4 +1,4 @@
-### Reflection
+### Reflection (Previous)
 
 - One benefit of our app is that users are allowed to directly click on the map and all the related information in other plots will be highlighted at the same time. This interaction helps efficiently retrieve the information that users need.
 - Users are allowed to select multi-area for comparing the amount of squirrels in those areas by simply press and hold shift and click the area on the map or bars in the chart.
@@ -19,17 +19,18 @@
 
 #### - Things we decided to work on in the future:
 1. Order plot 3 and plot 4 so the y-axes labels match up or the order of the regions could be arranged in ascending or descending for all graphs for better comprehension. 
-- This is a bug we've noticed already and it takes very long to fix. We are not expecting to fix it right away.
-
+    - This is a bug in translation from local Python to Dash that we've noticed already. We spent a long time searching for a workaround to no avail. We are not expecting to fix it the near future.
 2. Add scale (km or miles) to see how far different park regions are from one another.
+    - This is something we need to learn (time restraints)
 3. Add zoom-in interactivity onto the map.
 4. Add a compass to map so the user can orient themselves.
-- These are something we need to learn. (Time restraints)
+    - This is something we need to learn. (ime restraints)
+5. Add names to white nondescript regions in the map and add background color (try overlaying plots).
+    - We looked into adding a base map behind our choropleth but it is a complicated and not-well-documented task.
 
-#### - Feedbacks we found not that constructive:
-1. Add names to white nondescript regions in the map and add background color (try overlaying plots).
-2. The scrolling makes the reader lose focus on what he/she is looking at, maybe have horizontal scrolling instead.
-- These are considered not necessary. Horizontal scrolling makes it hard to see four plots at the same time.
+#### - Feedbacks we did not take into account:
+1. The scrolling makes the reader lose focus on what he/she is looking at, maybe have horizontal scrolling instead.
+    - This was not considered necessary. Horizontal scrolling would make it hard to see four plots at the same time.
 
 #### - Conclusion of feedbacks:
-Most of the feedbacks are very constructive. Users overall love the layout of our app but want more descriptions about some functions and more clear stated legend on the plot. Based on the feedbacks we received from our users, we worked on and updated with a much well-organized and orientated app.
+Most of the feedback was very constructive. Overall, users liked the layout of our app but requested more description of its functionality. To address this, we added app instructions in point-format to make them more obvious and noticable. We also added notes on the app. One note relates to the bottom-left plot and explains what the drop-down will do. Another note clarifys the color distinction in the bottom-right plot. Based on the feedback we received from our users, we were able to make our app more well-organized and orientated.
