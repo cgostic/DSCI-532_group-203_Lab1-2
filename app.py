@@ -11,11 +11,6 @@ import json
 
 
 
-
-
-
-
-
 app = dash.Dash(__name__, assets_folder='assets', external_stylesheets=[dbc.themes.BOOTSTRAP])
 server = app.server
 
@@ -25,7 +20,19 @@ app.title = 'Squirrel App DSCI 532'
 
 ## add magic
 def make_plot(y_axis = 'Running_or_Chasing'):
-       
+    """
+    Plot making function that contains four sub-functions to plot each of the 4 graphs in the app.
+
+    Parameters
+    ----------
+    y_axis : character
+        Drop-down menu selection value for the "plot_bar_behavior" sub-function to update the behavior plot 
+
+    Returns
+    -------
+    chart
+        The combined plot of the 4 sub-plots.
+    """
     # load the data
     with open('data/b_json_count.json') as data_file:
         b_json_count = json.load(data_file)
@@ -36,14 +43,28 @@ def make_plot(y_axis = 'Running_or_Chasing'):
     alt_base_layer_data_count = alt.Data(values = alt_json_count['features'])
 
     # make the plots
-    ph = 700
-    pw = 700
+    ph = 670
+    pw = 670
     
     ##################################
     # PLOT MAP of SQUIRREL COUNT
     ##################################
 
     def plot_map_total_count(selection):
+        """
+        Plot the map of squirrel count.
+
+        Parameters
+        ----------
+        selection : alt.selection_multi() object
+            selection paramter for setting up interactive multi-selection feature of the plots  
+
+        Returns
+        -------
+        base_map + choropleth
+            Park map with squirrel count
+        """
+
         # Plot of squirrel count
         base_map = alt.Chart(alt_base_layer_data_count).mark_geoshape(
             stroke='black',
@@ -98,6 +119,19 @@ def make_plot(y_axis = 'Running_or_Chasing'):
 
 
     def plot_bar_total_count(selection):
+        """
+        Make the bar plot of squirrel count.
+
+        Parameters
+        ----------
+        selection : alt.selection_multi() object
+            selection paramter for setting up interactive multi-selection feature of the plots  
+
+        Returns
+        -------
+        count_bar
+            The bar plot of squirrel count.
+        """
         count_bar = (alt.Chart(alt_base_layer_data_count, 
                             title = 'Squirrel Count by Park Region')
         .mark_bar()
@@ -109,7 +143,7 @@ def make_plot(y_axis = 'Running_or_Chasing'):
                                     titleFontSize = 20)),
             y = alt.X('properties.sitename_short:N', 
                     title = "Park Region", 
-                    axis = alt.Axis(labelFontSize = 12,
+                    axis = alt.Axis(labelFontSize = 14,
                                     titleFontSize = 20), 
                     sort = alt.EncodingSortField(field="properties.Unique_Squirrel_ID:Q", order="descending")),
             color = alt.Color('properties.Unique_Squirrel_ID:Q',
@@ -131,6 +165,19 @@ def make_plot(y_axis = 'Running_or_Chasing'):
     # PLOT DIFFERENCE in COUNT by TIME OF DAY
     ################################################
     def plot_bar_count_diff(selection):
+        """
+        Plot difference in squirrel count by time of day.
+
+        Parameters
+        ----------
+        selection : alt.selection_multi() object
+            selection paramter for setting up interactive multi-selection feature of the plots  
+
+        Returns
+        -------
+        area_count_shift
+            The bar plot of the difference in count by time of day.
+        """
         area_count_shift = (alt.Chart(alt_base_layer_data_count)
         .mark_bar()
         .add_selection(selection)
@@ -140,7 +187,7 @@ def make_plot(y_axis = 'Running_or_Chasing'):
                 axis = alt.Axis(labelFontSize = 16, 
                                 titleFontSize = 20)),
             alt.Y('properties.sitename_short:N',
-                axis = alt.Axis(labelFontSize = 12,
+                axis = alt.Axis(labelFontSize = 14,
                                 titleFontSize = 20), 
                 title = "Park Region",
                 sort = sort_order
@@ -166,6 +213,21 @@ def make_plot(y_axis = 'Running_or_Chasing'):
     # PLOT BEHAVIOR by PARK AREA
     ###################################
     def plot_bar_behavior(selection, y_axis = y_axis):
+        """
+        Plot user selected behavior by park area.
+
+        Parameters
+        ----------
+        selection : alt.selection_multi() object
+            selection paramter for setting up interactive multi-selection feature of the plots  
+
+        y_axis: character
+            Drop-down menu selection value of behavior for making the plot accordingly
+        Returns
+        -------
+        b_chart
+            The plot of the selected behavior.
+        """
 
         b_chart = (alt.Chart(squirrel_b_json)
             .mark_bar(color = 'gray')
@@ -174,7 +236,7 @@ def make_plot(y_axis = 'Running_or_Chasing'):
                           title = "Squirrel Count", axis = alt.Axis(labelFontSize = 18, titleFontSize = 20)),
                 
                 alt.Y('properties.sitename_short:N', 
-                          title = "Park Region", axis = alt.Axis(labelFontSize = 12, titleFontSize = 20),
+                          title = "Park Region", axis = alt.Axis(labelFontSize = 14, titleFontSize = 20),
                           sort = sort_order
                     ), 
                     opacity = alt.condition(brush, 
@@ -211,7 +273,7 @@ app.layout = html.Div(
         html.Div(
             className = "app-header",
             children = [
-                        html.Img(src='https://i.ibb.co/F78bQB2/logo-2.png', width=275),
+                        html.Img(src='https://i.ibb.co/F78bQB2/logo-2.png', width=200) ,
             ]
         ),
         html.Div(
@@ -219,41 +281,61 @@ app.layout = html.Div(
             children = [      
                         html.H1("Welcome to the Squirrel Park App!"),
                         html.H3('Guide your observance (or avoidance) of the famous squirrels of Central Park, New York.'),
-                        html.P('View squirrel distribution by park region, time of the day, and behavior. ' 
-                                'Direct the mouse to a region or bar on the graphs to see detailed information. '
-                                'Use the drop-down menu below the graphs to change the behavior displayed. '
-                                'Click on the map or any chart to highlight specific regions. Hold "Shift" and click'
-                                ' to highlight and compare multiple regions at once!')
+                        html.P('View squirrel distribution by park region, time of the day, and behavior. ' ),
+            ],
+            
+        ),
+
+        html.Div([
+        dbc.Row([
+                dbc.Col(html.Div(dbc.Alert(html.H4("Please make sure to read the following guidance before exploring the app!!"), color="danger")), 
+                width={"size": 5,  "offset": 1},),
+                ])
+                ]),
+
+        html.Div(
+    [
+        dbc.Row(
+            [
+                dbc.Col(html.Div(dbc.ListGroup(
+            [
+                dbc.ListGroupItem("* Direct the mouse to a region or bar on the graphs to see detailed information. "),
+                dbc.ListGroupItem("* Use the drop-down menu below the graphs to change the behavior displayed. "),
+                dbc.ListGroupItem("* Click on the map or any chart to highlight specific regions. Click any empty place in the graph to clear the selection."),
+                dbc.ListGroupItem("""* Hold "Shift" and click to highlight and compare multiple regions at once!"""),
+            ]
+                         )), 
+                width={"size": 11,  "offset": 1},),
             ]
         ),
+    ]
+),
+
+
         html.Div(
             className = "app__chart",
             children = [
                 html.Iframe(
                     sandbox='allow-scripts',
                     id='plot',
-                    height='1600',
+                    height='1550',
                     width='2000',
                     style={'border-width': '0px'},
 
                     ################ The magic happens here
                     srcDoc = make_plot().to_html()
                     ################ The magic happens here
-                            ),html.Div(
+                            ),
+        
+
+        html.Div(
     [
         dbc.Row(
             [
-                dbc.Col(
-                    html.Div("Interested in a certain behavior of squirrels? Select the behavior from the drop-down menu below to see where you can find more squirrels doing that! NOTE: This selection will only reflect on this plot."),
-                    width={"size": 6, "order": 1, "offset": 1},
-                ),
-                dbc.Col(html.Div(
-    [dbc.Card(
-            dbc.CardBody("Blue bar means this area has more squirrels in the morning while red bar means more squirrels in the afternoon."),
-            className="mb-3",
-        ),
-    ]
-), width={"size": 6, "order": 3, "offset": 8},),
+                dbc.Col(html.Div(dbc.Alert("Interested in a certain behavior of squirrels? Select the behavior from the drop-down menu below to see where you can find more squirrels doing that! NOTE: This selection will only change the behavior plot above.", color="info")), 
+                width={"size": 4,  "offset": 1},),
+                dbc.Col(html.Div(dbc.Alert("Blue bar on the left means more squirrels in the morning while red bar on the right means more squirrels in the afternoon.", color="info")), 
+                width={"size": 5,  "offset": 1},),
             ]
         ),
     ]
@@ -274,6 +356,7 @@ app.layout = html.Div(
                                         # Missing option here
                                             ],
                                     value = 'Running_or_Chasing',
+                                    clearable = False,
                                     style=dict(width='45%',
                                                 verticalAlign="middle",
                                                 fontSize = 18
@@ -287,7 +370,7 @@ app.layout = html.Div(
         html.Div(
             className = "app__bodytext",
             children = [
-                        html.H1("Sources:"),
+                        html.H2("Sources:"),
                         html.H4('Data:'),
                         html.A("Data of this app comes from here", href="https://data.cityofnewyork.us/Environment/2018-Central-Park-Squirrel-Census-Squirrel-Data/vfnx-vebw"),
                         html.H4("Images"),
