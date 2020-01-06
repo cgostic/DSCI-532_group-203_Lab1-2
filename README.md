@@ -1,6 +1,10 @@
 # DSCI-532_group-203_Lab1-2
 Milestones 1 and 2 for DSCI 532
 
+### Link to the app
+[Squirrel-Park-App](https://dsci-532-group203-milestone2.herokuapp.com/)  
+https://dsci-532-group203-milestone2.herokuapp.com/
+
 ## This this the first milestone project.
 
 Authors:  
@@ -40,7 +44,3 @@ Authors:
 * Direct the mouse to a region or bar on the graphs for tooltips. 
 * Use the drop-down menu below the graphs to change the behavior displayed. 
 * Click on the map or any chart to highlight specific regions. Hold "Shift" and click to highlight and compare multiple regions at once!
-
-### Link to the app
-[Squirrle-Park-App](https://dsci-532-group203-milestone2.herokuapp.com/)  
-https://dsci-532-group203-milestone2.herokuapp.com/
